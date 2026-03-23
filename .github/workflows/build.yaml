@@ -1,0 +1,24 @@
+name: Build and publish container
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - Containerfile
+      - versions.yaml
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - Containerfile
+      - versions.yaml
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: simons-containers/.github/.github/workflows/ghcr.io-build-deploy.yaml@main
+    with:
+      registry: ghcr.io/simons-containers
+      image: distroless-postgres
+      appname: postgres 
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
