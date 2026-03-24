@@ -57,6 +57,7 @@ jobs:
           yq -i ".readline= \"$READLINE\"" versions.yaml
           yq -i ".ncurses= \"$NCURSES\"" versions.yaml
           yq -i ".dash= \"$DASH\"" versions.yaml
+          git diff versions.yaml
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
