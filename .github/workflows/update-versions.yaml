@@ -1,0 +1,67 @@
+name: Update versions
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Fetch latest versions
+        run: |
+          POSTGRES=$(git ls-remote --tags https://github.com/postgres/postgres \
+            | awk -F/ '/REL_/ {gsub("REL_", ""); gsub(/_[A-Z]+[0-9]+/, ""); gsub("_", "."); print $3}' \
+            | sort -V | uniq | tail -1)
+          GCC=$(curl -s https://ftp.gnu.org/gnu/gcc/ \
+            | grep -o 'gcc-[0-9]\+\.[0-9]\+\.[0-9]\+/' \
+            | sed 's#gcc-##; s#/##' \
+            | sort -V | tail -n 1)          
+          ZLIB=$(curl -s https://zlib.net/ \
+            | grep -o 'zlib-[0-9]\+\.[0-9]\+\(\.[0-9]\+\)\?\.tar\.gz' \
+            | sed 's/zlib-//; s/\.tar\.gz//' \
+            | sort -V | tail -n 1)
+          OPENSSL=$(git ls-remote --tags https://github.com/openssl/openssl \
+            | awk -F/ '/[0-9]$/  && /openssl-/ && ! /-[a-z]/ {gsub("openssl-", ""); print $3}'
+            | sort -V | tail -1)
+          ICU=$(git ls-remote --tags https://github.com/unicode-org/icu \
+            | awk -F/ '/\/release/&& !/rc/ {gsub("release-", ""); print $3}' \
+            | sort -V | tail -1)
+          READLINE=$(curl -s https://ftp.gnu.org/gnu/readline/ \
+            | grep -Eo 'readline-[0-9]+(\.[0-9]+)*\.tar\.gz' \
+            | sed -E 's/readline-([0-9.]+)\.tar\.gz/\1/' \
+            | sort -uV | tail -1)
+          NCURSES=$(curl -s https://ftp.gnu.org/gnu/ncurses/ \
+            | grep -Eo 'ncurses-[0-9]+(\.[0-9]+)*\.tar\.gz' \
+            | sed -E 's/ncurses-([0-9.]+)\.tar\.gz/\1/' \
+            | sort -uV | tail -1)
+          DASH=$(curl -s http://gondor.apana.org.au/~herbert/dash/files/ \
+            | grep -Eo 'dash-[0-9]+(\.[0-9]+)*\.tar\.gz' \
+            | sed -E 's/dash-([0-9.]+)\.tar\.gz/\1/' \
+            | sort -uV | tail -1)
+
+          set -u
+          yq -i ".postgres= \"$POSTGRES\"" versions.yaml
+          yq -i ".gcc= \"$GCC\"" versions.yaml
+          yq -i ".zlib= \"$ZLIB\"" versions.yaml
+          yq -i ".openssl= \"$OPENSSL\"" versions.yaml
+          yq -i ".icu= \"$ICU\"" versions.yaml
+          yq -i ".readline= \"$READLINE\"" versions.yaml
+          yq -i ".ncurses= \"$NCURSES\"" versions.yaml
+          yq -i ".dash= \"$DASH\"" versions.yaml
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: update-versions
+          delete-branch: true
+          title: Update versions
+          commit-message: Update versions
