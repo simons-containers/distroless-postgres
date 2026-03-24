@@ -30,7 +30,7 @@ jobs:
             | sed 's/zlib-//; s/\.tar\.gz//' \
             | sort -V | tail -n 1)
           OPENSSL=$(git ls-remote --tags https://github.com/openssl/openssl \
-            | awk -F/ '/[0-9]$/  && /openssl-/ && ! /-[a-z]/ {gsub("openssl-", ""); print $3}'
+            | awk -F/ '/[0-9]$/  && /openssl-/ && ! /-[a-z]/ {gsub("openssl-", ""); print $3}' \
             | sort -V | tail -1)
           ICU=$(git ls-remote --tags https://github.com/unicode-org/icu \
             | awk -F/ '/\/release/&& !/rc/ {gsub("release-", ""); print $3}' \
