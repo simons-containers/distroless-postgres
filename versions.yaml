@@ -5,4 +5,4 @@ openssl: "3.6.1"
 icu: '78.3'
 readline: "8.3"
 ncurses: "6.6"
-dash: "0.5.13.1"
+dash: "0.5.13.2"
