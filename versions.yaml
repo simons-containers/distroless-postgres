@@ -1,8 +1,8 @@
 postgres: "18.3"
-gcc: "15.2.0"
+gcc: ""
 zlib: "1.3.2"
 openssl: "3.6.1"
 icu: '78.3'
-readline: "8.3"
-ncurses: "6.6"
+readline: ""
+ncurses: ""
 dash: "0.5.13.2"
