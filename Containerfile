@@ -7,6 +7,7 @@ ARG OPENSSL_VERSION
 ARG ICU_VERSION
 ARG READLINE_VERSION
 ARG NCURSES_VERSION
+ARG LIBURING_VERSION
 ARG DASH_VERSION
 
 ARG POSTGRES_SOURCE=https://ftp.postgresql.org/pub/source/v${POSTGRES_VERSION}/postgresql-${POSTGRES_VERSION}.tar.gz
@@ -17,6 +18,7 @@ ARG OPENSSL_SOURCE=https://github.com/openssl/openssl/releases/download/openssl-
 ARG ICU_SOURCE=https://github.com/unicode-org/icu/releases/download/release-${ICU_VERSION}/icu4c-${ICU_VERSION}-sources.tgz
 ARG NCURSES_SOURCE=${GNU_SOURCES}/ncurses/ncurses-${NCURSES_VERSION}.tar.gz
 ARG READLINE_SOURCE=${GNU_SOURCES}/readline/readline-${READLINE_VERSION}.tar.gz
+ARG LIBURING_SOURCE=https://github.com/axboe/liburing/archive/refs/tags/liburing-${LIBURING_VERSION}.tar.gz
 ARG DASH_SOURCE=http://gondor.apana.org.au/~herbert/dash/files/dash-${DASH_VERSION}.tar.gz
 
 RUN pacman -Sy --noconfirm python >/dev/null
@@ -86,13 +88,23 @@ RUN curl --silent --show-error --location --output readline.tar.gz \
     && make -s -j$(nproc) \
     && make install DESTDIR=/base
 
+WORKDIR /build/liburing
+RUN curl --silent --show-error --location --output liburing.tar.gz \
+    "${LIBURING_SOURCE}" \
+    && tar xf liburing.tar.gz --strip-components=1 \
+    && CPPFLAGS="-I/base/usr/include" LDFLAGS="-L/base/usr/lib" \
+        ./configure --prefix=/usr \
+    && make -s -j$(nproc) \
+    && make install DESTDIR=/base
+
 WORKDIR /build/postgres
 RUN curl --silent --show-error --location --output postgresql.tar.gz \
     "${POSTGRES_SOURCE}" \
     && tar xf postgresql.tar.gz --strip-components=1 \
     && CPPFLAGS="-I/base/usr/include" LDFLAGS="-L/base/usr/lib" \
+       PKG_CONFIG_PATH="/base/usr/lib/pkgconfig" \
         ./configure --prefix=/usr --disable-rpath --with-openssl \
-        --enable-thread-safety --with-uuid=e2fs \
+        --enable-thread-safety --with-uuid=e2fs --with-liburing \
     && make -s -j$(nproc) \
     && make install DESTDIR=/base
 

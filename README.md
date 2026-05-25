@@ -12,6 +12,7 @@ Bare-bones distroless PostgreSQL container image.
 | `ICU_VERSION` | Version of icu to use
 | `READLINE_VERSION` | Version of readline to use
 | `NCURSES_VERSION` | Version of ncurses to use
+| `LIBURING_VERSION` | Version of liburing to use
 | `DASH_VERSION` | Version of dash to use
 
 Build container using build-args from versions.yaml:

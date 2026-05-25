@@ -52,6 +52,9 @@ jobs:
               | grep -Eo 'dash-[0-9]+(\.[0-9]+)*\.tar\.gz' \
               | sed -E 's/dash-([0-9.]+)\.tar\.gz/\1/' \
               | sort -uV | tail -1)
+            LIBURING=$(git ls-remote --tags --refs https://github.com/axboe/liburing.git \
+              | awk -F/ '! /rc[0-9]*/ {gsub("liburing-", "");  print $3 }' \
+              | sort -uV | tail -1)
   
             yq -i ".postgres= \"$POSTGRES\"" versions.yaml
             yq -i ".gcc= \"$GCC\"" versions.yaml
@@ -61,6 +64,7 @@ jobs:
             yq -i ".readline= \"$READLINE\"" versions.yaml
             yq -i ".ncurses= \"$NCURSES\"" versions.yaml
             yq -i ".dash= \"$DASH\"" versions.yaml
+            yq -i ".liburing= \"$LIBURING\"" versions.yaml
             git diff versions.yaml
 
       - name: Create Pull Request
