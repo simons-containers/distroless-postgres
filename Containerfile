@@ -127,7 +127,7 @@ RUN gcc -O2 -o /base/usr/bin/entrypoint entrypoint.c
 
 RUN rm -fr /base/usr/lib/{pkgconfig,cmake} /base/usr/share/{doc,info}
 
-FROM ghcr.io/simons-public/distroless/base
+FROM ghcr.io/simons-containers/distroless-glibc:2.43
 
 ARG POSTGRES_VERSION
 ARG GCC_VERSION
