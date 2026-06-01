@@ -8,7 +8,7 @@ ARG ICU_VERSION
 ARG READLINE_VERSION
 ARG NCURSES_VERSION
 ARG LIBURING_VERSION
-ARG DASH_VERSION
+ARG POPEN_SHIM_VERSION
 
 ARG POSTGRES_SOURCE=https://ftp.postgresql.org/pub/source/v${POSTGRES_VERSION}/postgresql-${POSTGRES_VERSION}.tar.gz
 ARG GCC_SOURCE=https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz
@@ -19,7 +19,7 @@ ARG ICU_SOURCE=https://github.com/unicode-org/icu/releases/download/release-${IC
 ARG NCURSES_SOURCE=${GNU_SOURCES}/ncurses/ncurses-${NCURSES_VERSION}.tar.gz
 ARG READLINE_SOURCE=${GNU_SOURCES}/readline/readline-${READLINE_VERSION}.tar.gz
 ARG LIBURING_SOURCE=https://github.com/axboe/liburing/archive/refs/tags/liburing-${LIBURING_VERSION}.tar.gz
-ARG DASH_SOURCE=http://gondor.apana.org.au/~herbert/dash/files/dash-${DASH_VERSION}.tar.gz
+ARG POPEN_SHIM_SOURCE=https://github.com/simons-containers/no-sh-popen-shim/archive/refs/tags/v${POPEN_SHIM_VERSION}.tar.gz
 
 RUN pacman -Sy --noconfirm python >/dev/null
 
@@ -113,14 +113,13 @@ WORKDIR /build/postgres/contrib
 RUN make -s -j$(nproc) \
     && make install DESTDIR=/base
 
-# inidtb requires an 'sh' to call postgres
-WORKDIR /build/dash
-RUN curl --silent --show-error --location --output dash.tar.gz \
-    "${DASH_SOURCE}" \
-    && tar xf dash.tar.gz --strip-components=1 \
-    && ./configure \
-    && make -s -j$(nproc) \
-    && cp src/dash /base/usr/bin/sh  
+# no-sh-popen-shim removes the need for a shell when running initdb
+WORKDIR /build/no-sh-popen-shim
+RUN curl --silent --show-error --location --output shim.tar.gz \
+    "${POPEN_SHIM_SOURCE}" \
+    && tar xf shim.tar.gz --strip-components=1 \
+    && make -s \
+    && cp no-sh-popen-shim.so /base/usr/lib
 
 WORKDIR /build/entrypoint
 COPY entrypoint.c ./entrypoint.c
@@ -137,7 +136,7 @@ ARG OPENSSL_VERSION
 ARG ICU_VERSION
 ARG READLINE_VERSION
 ARG NCURSES_VERSION
-ARG DASH_VERSION
+ARG POPEN_SHIM_VERSION
 
 COPY --from=builder /base/usr/lib/ /usr/lib/
 COPY --from=builder /base/usr/share/ /usr/share/
@@ -149,6 +148,7 @@ WORKDIR /var/lib/postgresql/data
 ENV PSQL_PAGER=""
 ENV PGDATA=/var/lib/postgresql/data
 ENV PWD=/var/lib/postgresql/data
+ENV LD_PRELOAD=/usr/lib/no-sh-popen-shim.so
 
 ENTRYPOINT ["entrypoint", "-h", "0.0.0.0"]
 
@@ -158,4 +158,4 @@ LABEL org.opencontainers.image.version="${POSTGRES_VERSION}"
 LABEL org.opencontainers.image.volumes.data="/var/lib/postgresql/data"
 LABEL org.opencontainers.image.volumes.init="/initdb"
 LABEL org.opencontainers.image.source="https://github.com/simons-containers/distroless-postgres"
-LABEL org.opencontainers.image.base.libs="gcc@${GCC_VERSION},zlib@${ZLIB_VERSION},openssl@${OPENSSL_VERSION},icu@${ICU_VERSION},readline@${READLINE_VERSION},ncurses@${NCURSES_VERSION},dash@${DASH_VERSION}"
+LABEL org.opencontainers.image.base.libs="gcc@${GCC_VERSION},zlib@${ZLIB_VERSION},openssl@${OPENSSL_VERSION},icu@${ICU_VERSION},readline@${READLINE_VERSION},ncurses@${NCURSES_VERSION},no-sh-popen-shim@${POPEN_SHIM_VERSION}"

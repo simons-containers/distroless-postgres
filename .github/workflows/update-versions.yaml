@@ -48,14 +48,15 @@ jobs:
               | grep -Eo 'ncurses-[0-9]+(\.[0-9]+)*\.tar\.gz' \
               | sed -E 's/ncurses-([0-9.]+)\.tar\.gz/\1/' \
               | sort -uV | tail -1)
-            DASH=$(curl -sf http://gondor.apana.org.au/~herbert/dash/files/ \
-              | grep -Eo 'dash-[0-9]+(\.[0-9]+)*\.tar\.gz' \
-              | sed -E 's/dash-([0-9.]+)\.tar\.gz/\1/' \
-              | sort -uV | tail -1)
+            POPEN_SHIM=$(git ls-remote --tags https://github.com/simons-containers/no-sh-popen-shim \
+              | awk -F/ '/v[0-9]/ && !/\^\{\}$/ {gsub("v", ""); print $3}' \
+              | sort -V | tail -1)
             LIBURING=$(git ls-remote --tags --refs https://github.com/axboe/liburing.git \
               | awk -F/ '! /rc[0-9]*/ {gsub("liburing-", "");  print $3 }' \
               | sort -uV | tail -1)
   
+            : ${POSTGRES:?} ${GCC:?} ${ZLIB:?} ${OPENSSL:?} ${ICU:?} ${READLINE:?} ${NCURSES:?} ${POPEN_SHIM:?} ${LIBURING:?}
+
             yq -i ".postgres= \"$POSTGRES\"" versions.yaml
             yq -i ".gcc= \"$GCC\"" versions.yaml
             yq -i ".zlib= \"$ZLIB\"" versions.yaml
@@ -63,7 +64,7 @@ jobs:
             yq -i ".icu= \"$ICU\"" versions.yaml
             yq -i ".readline= \"$READLINE\"" versions.yaml
             yq -i ".ncurses= \"$NCURSES\"" versions.yaml
-            yq -i ".dash= \"$DASH\"" versions.yaml
+            yq -i ".popen_shim= \"$POPEN_SHIM\"" versions.yaml
             yq -i ".liburing= \"$LIBURING\"" versions.yaml
             git diff versions.yaml
 

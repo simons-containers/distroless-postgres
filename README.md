@@ -13,7 +13,7 @@ Bare-bones distroless PostgreSQL container image.
 | `READLINE_VERSION` | Version of readline to use
 | `NCURSES_VERSION` | Version of ncurses to use
 | `LIBURING_VERSION` | Version of liburing to use
-| `DASH_VERSION` | Version of dash to use
+| `POPEN_SHIM_VERSION` | Version of no-sh-popen-shim to use
 
 Build container using build-args from versions.yaml:
 
@@ -49,5 +49,5 @@ This project depends on several upstream components that provide essential runti
 - **ncurses** - The ncurses (new curses) library is a free software emulation of curses in System V Release 4.0 (SVr4), and more.  
   https://invisible-island.net/ncurses/
 
-- **dash** - DASH is a POSIX-compliant implementation of /bin/sh that aims to be as small as possible.    
-  http://gondor.apana.org.au/~herbert/dash/
+- **no-sh-popen-shim** - LD_PRELOAD shim that replaces popen with a version that doesn't require a posix sh.  
+  https://github.com/simons-containers/no-sh-popen-shim

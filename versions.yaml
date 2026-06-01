@@ -6,4 +6,4 @@ icu: '78.3'
 readline: "8.3"
 ncurses: "6.6"
 liburing: "2.14"
-dash: "0.5.13.4"
+popen_shim: "1.0.0"
