@@ -1,3 +1,7 @@
+![Latest](https://ghcr-badge.egpl.dev/simons-containers/distroless-postgres/latest_tag?ignore=latest,sha256*&label=latest)  
+![Size](https://ghcr-badge.egpl.dev/simons-containers/distroless-postgres/size?tag=latest)  
+![Tags](https://ghcr-badge.egpl.dev/simons-containers/distroless-postgres/tags?ignore=latest,sha256*)  
+
 # Distroless PostgreSQL container
 
 Bare-bones distroless PostgreSQL container image.
