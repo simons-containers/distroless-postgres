@@ -55,7 +55,9 @@ jobs:
               | awk -F/ '! /rc[0-9]*/ {gsub("liburing-", "");  print $3 }' \
               | sort -uV | tail -1)
   
-            : ${POSTGRES:?} ${GCC:?} ${ZLIB:?} ${OPENSSL:?} ${ICU:?} ${READLINE:?} ${NCURSES:?} ${POPEN_SHIM:?} ${LIBURING:?}
+            : ${POSTGRES:?} ${GCC:?} ${ZLIB:?} ${OPENSSL:?} ${ICU:?} ${READLINE:?}
+            : ${NCURSES:?} ${POPEN_SHIM:?} ${LIBURING:?}
+            
             yq -i ".postgres= \"$POSTGRES\"" versions.yaml
             yq -i ".gcc= \"$GCC\"" versions.yaml
             yq -i ".zlib= \"$ZLIB\"" versions.yaml
