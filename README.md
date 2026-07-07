@@ -1,25 +1,8 @@
+[![Current Version](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/release.svg)](https://github.com/simons-containers/distroless-postgres/pkgs/container/distroless-postgres) [![Tags](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/tags.svg)](https://github.com/simons-containers/distroless-postgres/pkgs/container/distroless-postgres) <br> ![Current Size](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/size.svg) ![Wasted Size](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/wasted.svg) ![Efficiency](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/efficiency.svg) <br> ![Critical](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/critical.svg) ![High](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/high.svg) ![Medium](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/medium.svg) ![Low](https://raw.githubusercontent.com/simons-containers/distroless-postgres/badges/.badges/main/low.svg) <br> [![Publish Workflow](https://img.shields.io/github/actions/workflow/status/simons-containers/distroless-postgres/deploy.yaml?label=Publish%20Workflow&logo=github)](https://github.com/simons-containers/distroless-postgres/actions/workflows/deploy.yaml) [![Update Workflow](https://img.shields.io/github/actions/workflow/status/simons-containers/distroless-postgres/update-versions.yaml?label=Update%20Workflow&logo=github)](https://github.com/simons-containers/distroless-postgres/actions/workflows/update-versions.yaml)
+
 # Distroless PostgreSQL container
 
 Bare-bones distroless PostgreSQL container image.
-
-## Building
-
-| Build Arg | Description |
-|---|---|
-| `POSTGRES_VERSION` | Version of PostgreSQL to use
-| `ZLIB_VERSION` | Version of zlib to use
-| `OPENSSL_VERSION` | Version of openssl to use
-| `ICU_VERSION` | Version of icu to use
-| `READLINE_VERSION` | Version of readline to use
-| `NCURSES_VERSION` | Version of ncurses to use
-| `LIBURING_VERSION` | Version of liburing to use
-| `POPEN_SHIM_VERSION` | Version of no-sh-popen-shim to use
-
-Build container using build-args from versions.yaml:
-
-```bash
-docker build -t postgres $(yq -r 'to_entries | .[] | "--build-arg \(.key | ascii_upcase)_VERSION=\(.value)"' versions.yaml) -f Containerfile .
-```
 
 ## License
 
