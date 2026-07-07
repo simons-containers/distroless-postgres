@@ -1,0 +1,65 @@
+{
+  "postgres": {
+    "version": "18.4",
+    "purl": "pkg:generic/postgres",
+    "source": {
+      "url_pattern": "https://ftp.postgresql.org/pub/source/v{version}/postgresql-{version}.tar.gz"
+    }
+  },
+  "gcc": {
+    "version": "16.1.0",
+    "purl": "pkg:generic/gcc",
+    "source": {
+      "url_pattern": "https://ftp.gnu.org/gnu/gcc/gcc-{version}/gcc-{version}.tar.xz"
+    }
+  },
+  "zlib": {
+    "version": "1.3.2",
+    "purl": "pkg:generic/zlib",
+    "source": {
+      "url_pattern": "https://zlib.net/zlib-{version}.tar.gz"
+    }
+  },
+  "openssl": {
+    "version": "3.6.3",
+    "purl": "pkg:generic/openssl",
+    "source": {
+      "url_pattern": "https://www.openssl.org/source/openssl-{version}.tar.gz"
+    }
+  },
+  "readline": {
+    "version": "8.3",
+    "purl": "pkg:generic/readline",
+    "source": {
+      "url_pattern": "https://ftp.gnu.org/pub/gnu/readline/readline-{version}.tar.gz"
+    }
+  },
+  "ncurses": {
+    "version": "6.6",
+    "purl": "pkg:generic/ncurses",
+    "source": {
+      "url_pattern": "https://ftp.gnu.org/pub/gnu/ncurses/ncurses-{version}.tar.gz"
+    }
+  },
+  "icu": {
+    "version": "78.3",
+    "purl": "pkg:generic/icu",
+    "source": {
+      "url_pattern": "https://github.com/unicode-org/icu/releases/download/release-{version}/icu4c-{version}-sources.tgz"
+    }
+  },
+  "liburing": {
+    "version": "2.15",
+    "purl": "pkg:generic/liburing",
+    "source": {
+      "url_pattern": "https://github.com/axboe/liburing/archive/refs/tags/liburing-{version}.tar.gz"
+    }
+  },
+  "popen_shim": {
+    "version": "1.0.0",
+    "purl": "pkg:generic/popen_shim",
+    "source": {
+      "url_pattern": "https://github.com/simons-containers/no-sh-popen-shim/archive/refs/tags/v{version}.tar.gz"
+    }
+  }
+}
