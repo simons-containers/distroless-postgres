@@ -58,17 +58,29 @@ jobs:
             : ${POSTGRES:?} ${GCC:?} ${ZLIB:?} ${OPENSSL:?} ${ICU:?} ${READLINE:?}
             : ${NCURSES:?} ${POPEN_SHIM:?} ${LIBURING:?}
             
-            yq -i ".postgres= \"$POSTGRES\"" versions.yaml
-            yq -i ".gcc= \"$GCC\"" versions.yaml
-            yq -i ".zlib= \"$ZLIB\"" versions.yaml
-            yq -i ".openssl= \"$OPENSSL\"" versions.yaml
-            yq -i ".icu= \"$ICU\"" versions.yaml
-            yq -i ".readline= \"$READLINE\"" versions.yaml
-            yq -i ".ncurses= \"$NCURSES\"" versions.yaml
-            yq -i ".popen_shim= \"$POPEN_SHIM\"" versions.yaml
-            yq -i ".liburing= \"$LIBURING\"" versions.yaml
-            git diff versions.yaml
+            jq \
+              --arg postgres "$POSTGRES" \
+              --arg gcc "$GCC" \
+              --arg zlib "$ZLIB" \
+              --arg openssl "$OPENSSL" \
+              --arg readline "$READLINE" \
+              --arg ncurses "$NCURSES" \
+              --arg icu "$ICU" \
+              --arg liburing "$LIBURING" \
+              --arg popen_shim "$POPEN_SHIM" \
+              '
+                .postgres.version = $postgres |
+                .gcc.version = $gcc |
+                .zlib.version = $zlib |
+                .openssl.version = $openssl |
+                .readline.version = $readline |
+                .ncurses.version = $ncurses |
+                .icu.version = $icu |
+                .liburing.version = $liburing |
+                .popen_shim.version  = $popen_shim
+              ' sources.json > tmp.json && mv tmp.json sources.json
 
+            git diff sources.json
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
