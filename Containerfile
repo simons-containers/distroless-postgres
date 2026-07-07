@@ -10,16 +10,16 @@ ARG NCURSES_VERSION
 ARG LIBURING_VERSION
 ARG POPEN_SHIM_VERSION
 
-ARG POSTGRES_SOURCE=https://ftp.postgresql.org/pub/source/v${POSTGRES_VERSION}/postgresql-${POSTGRES_VERSION}.tar.gz
-ARG GCC_SOURCE=https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz
-ARG ZLIB_SOURCE=https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz
-ARG GNU_SOURCES=https://ftp.gnu.org/pub/gnu
-ARG OPENSSL_SOURCE=https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz
-ARG ICU_SOURCE=https://github.com/unicode-org/icu/releases/download/release-${ICU_VERSION}/icu4c-${ICU_VERSION}-sources.tgz
-ARG NCURSES_SOURCE=${GNU_SOURCES}/ncurses/ncurses-${NCURSES_VERSION}.tar.gz
-ARG READLINE_SOURCE=${GNU_SOURCES}/readline/readline-${READLINE_VERSION}.tar.gz
-ARG LIBURING_SOURCE=https://github.com/axboe/liburing/archive/refs/tags/liburing-${LIBURING_VERSION}.tar.gz
-ARG POPEN_SHIM_SOURCE=https://github.com/simons-containers/no-sh-popen-shim/archive/refs/tags/v${POPEN_SHIM_VERSION}.tar.gz
+ARG POSTGRES_SOURCE
+ARG GCC_SOURCE
+ARG ZLIB_SOURCE
+ARG GNU_SOURCES
+ARG OPENSSL_SOURCE
+ARG ICU_SOURCE
+ARG NCURSES_SOURCE
+ARG READLINE_SOURCE
+ARG LIBURING_SOURCE
+ARG POPEN_SHIM_SOURCE
 
 RUN pacman -Sy --noconfirm python >/dev/null
 
