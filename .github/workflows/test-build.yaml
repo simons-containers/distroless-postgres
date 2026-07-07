@@ -1,0 +1,27 @@
+name: Test build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Containerfile
+      - sources.json
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Run build action
+        id: build
+        uses: simons-containers/actions/build@main
+        with:
+          context: .
+          containerfile: Containerfile
+          upload_artifact: true
