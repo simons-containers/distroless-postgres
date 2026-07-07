@@ -1,0 +1,32 @@
+name: Publish
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+  attestations: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - Containerfile
+      - sources.json
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Deploy image
+        uses: simons-containers/actions/deploy@main
+        with:
+          appname: postgres
+          image_name: distroless-postgres
+          registry_token: ${{ secrets.GITHUB_TOKEN }}
+          badges_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_latest: ${{ github.ref_name == github.event.repository.default_branch }}
