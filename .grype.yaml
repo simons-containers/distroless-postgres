@@ -1,0 +1,3 @@
+ignore:
+  # Only applies to Debian postgresql-common package
+  - vulnerability: CVE-2017-8806
