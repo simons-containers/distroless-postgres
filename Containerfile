@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/gcc:latest-dev AS builder
+FROM archlinux:base-devel-20260308.0.497099 AS builder
 
 ARG POSTGRES_VERSION
 ARG GCC_VERSION
