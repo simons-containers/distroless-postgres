@@ -1,4 +1,4 @@
-FROM archlinux:base-devel-20260308.0.497099 AS builder
+FROM cgr.dev/chainguard/gcc:latest-dev AS builder
 
 ARG POSTGRES_VERSION
 ARG GCC_VERSION
@@ -98,7 +98,7 @@ RUN curl --silent --show-error --location --output liburing.tar.gz \
     && make install DESTDIR=/base
 
 WORKDIR /build/postgres
-ENV LD_LIBRARY_PATH=/base/usr/lib
+ENV PKG_CONFIG_LIBDIR=/base/lib/pkgconfig
 RUN curl --silent --show-error --location --output postgresql.tar.gz \
     "${POSTGRES_SOURCE}" \
     && tar xf postgresql.tar.gz --strip-components=1 \
