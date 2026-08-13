@@ -24,8 +24,9 @@ ARG POPEN_SHIM_SOURCE
 RUN pacman -Sy --noconfirm python >/dev/null
 
 WORKDIR /build/gcc
-RUN curl --silent --show-error --location --output gcc.tar.gz \
-    "${GCC_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output gcc.tar.gz "${GCC_SOURCE}" \
     && tar xf gcc.tar.gz --strip-components=1 \
     && ./contrib/download_prerequisites \
     && mkdir build && cd build \
@@ -42,16 +43,18 @@ RUN curl --silent --show-error --location --output gcc.tar.gz \
     && make install-target-libstdc++-v3 DESTDIR=/base
 
 WORKDIR /build/zlib
-RUN curl --silent --show-error --location --output zlib.tar.gz \
-    "${ZLIB_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output zlib.tar.gz "${ZLIB_SOURCE}" \
     && tar xf zlib.tar.gz --strip-components=1 \
     && ./configure --prefix=/usr \
     && make -s -j$(nproc) \
     && make install DESTDIR=/base
 
 WORKDIR /build/openssl
-RUN curl --silent --show-error --location --output openssl.tar.gz \
-    "${OPENSSL_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output openssl.tar.gz "${OPENSSL_SOURCE}" \
     && tar xf openssl.tar.gz --strip-components=1 \
     && ./Configure linux-x86_64 --prefix=/usr --libdir=/usr/lib no-tests no-docs \
         --with-zlib-include=/base/usr/include --with-zlib-lib=/base/usr/lib \
@@ -59,8 +62,9 @@ RUN curl --silent --show-error --location --output openssl.tar.gz \
     && make install DESTDIR=/base
 
 WORKDIR /build/icu
-RUN curl --silent --show-error --location --output icu.tar.gz \
-    "${ICU_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output icu.tar.gz "${ICU_SOURCE}" \
     && tar xf icu.tar.gz --strip-components=1 \
     && cd source \
     && ./configure \
@@ -71,8 +75,9 @@ RUN curl --silent --show-error --location --output icu.tar.gz \
     && make install DESTDIR=/base
 
 WORKDIR /build/ncurses
-RUN curl --silent --show-error --location --output ncurses.tar.gz \
-    "${NCURSES_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output ncurses.tar.gz "${NCURSES_SOURCE}" \
     && tar xf ncurses.tar.gz --strip-components=1 \
     && ./configure --prefix=/usr --with-shared --without-debug \
         --without-ada --enable-widec --without-cxx \
@@ -80,8 +85,9 @@ RUN curl --silent --show-error --location --output ncurses.tar.gz \
     && make install DESTDIR=/base
 
 WORKDIR /build/readline
-RUN curl --silent --show-error --location --output readline.tar.gz \
-    "${READLINE_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output readline.tar.gz "${READLINE_SOURCE}" \
     && tar xf readline.tar.gz --strip-components=1 \
     && CPPFLAGS="-I/base/usr/include" LDFLAGS="-L/base/usr/lib" \
         ./configure --prefix=/usr --with-curses --enable-multibyte \
@@ -89,8 +95,9 @@ RUN curl --silent --show-error --location --output readline.tar.gz \
     && make install DESTDIR=/base
 
 WORKDIR /build/liburing
-RUN curl --silent --show-error --location --output liburing.tar.gz \
-    "${LIBURING_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output liburing.tar.gz "${LIBURING_SOURCE}" \
     && tar xf liburing.tar.gz --strip-components=1 \
     && CPPFLAGS="-I/base/usr/include" LDFLAGS="-L/base/usr/lib" \
         ./configure --prefix=/usr \
@@ -98,8 +105,9 @@ RUN curl --silent --show-error --location --output liburing.tar.gz \
     && make install DESTDIR=/base
 
 WORKDIR /build/postgres
-RUN curl --silent --show-error --location --output postgresql.tar.gz \
-    "${POSTGRES_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output postgresql.tar.gz "${POSTGRES_SOURCE}" \
     && tar xf postgresql.tar.gz --strip-components=1 \
     && CPPFLAGS="-I/base/usr/include" LDFLAGS="-L/base/usr/lib" \
        PKG_CONFIG_PATH="/base/usr/lib/pkgconfig" \
@@ -115,8 +123,9 @@ RUN make -s -j$(nproc) \
 
 # no-sh-popen-shim removes the need for a shell when running initdb
 WORKDIR /build/no-sh-popen-shim
-RUN curl --silent --show-error --location --output shim.tar.gz \
-    "${POPEN_SHIM_SOURCE}" \
+RUN curl --silent --show-error --location  \
+    --retry 5 --retry-max-time 30 \
+    --output shim.tar.gz "${POPEN_SHIM_SOURCE}" \
     && tar xf shim.tar.gz --strip-components=1 \
     && make -s \
     && cp no-sh-popen-shim.so /base/usr/lib
