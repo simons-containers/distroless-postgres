@@ -1,6 +1,6 @@
 {
   "postgres": {
-    "version": "18.4",
+    "version": "18.6",
     "purl": "pkg:generic/postgres",
     "source": {
       "url_pattern": "https://ftp.postgresql.org/pub/source/v{version}/postgresql-{version}.tar.gz"
