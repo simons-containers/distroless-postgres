@@ -21,7 +21,7 @@
     }
   },
   "openssl": {
-    "version": "3.6.3",
+    "version": "3.6.4",
     "purl": "pkg:generic/openssl",
     "source": {
       "url_pattern": "https://www.openssl.org/source/openssl-{version}.tar.gz"
