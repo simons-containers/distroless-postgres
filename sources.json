@@ -42,7 +42,7 @@
     }
   },
   "icu": {
-    "version": "78.3",
+    "version": "79.1",
     "purl": "pkg:generic/icu",
     "source": {
       "url_pattern": "https://github.com/unicode-org/icu/releases/download/release-{version}/icu4c-{version}-sources.tgz"
