@@ -1,4 +1,4 @@
-FROM archlinux:base-devel-20261011.0.609700 AS builder
+FROM archlinux:base-devel-20261122.0.629543 AS builder
 
 ARG POSTGRES_VERSION
 ARG GCC_VERSION
