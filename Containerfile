@@ -109,7 +109,8 @@ RUN curl --silent --show-error --location  \
     --retry 5 --retry-max-time 30 \
     --output postgresql.tar.gz "${POSTGRES_SOURCE}" \
     && tar xf postgresql.tar.gz --strip-components=1 \
-    && CPPFLAGS="-I/base/usr/include" LDFLAGS="-L/base/usr/lib" \
+    && CPPFLAGS="-I/base/usr/include" \
+       LDFLAGS="-L/base/usr/lib -Wl,-rpath-link,/base/usr/lib" \
        PKG_CONFIG_PATH="/base/usr/lib/pkgconfig" \
         ./configure --prefix=/usr --disable-rpath --with-openssl \
         --enable-thread-safety --with-uuid=e2fs --with-liburing \
